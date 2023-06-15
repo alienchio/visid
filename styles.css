@@ -6,7 +6,7 @@ body {
   padding: 0;
 }
 p {
-  min-height: 1em; /* Tamaño mínimo de fuente para párrafos */
+  min-height: 26px; /* Tamaño mínimo de fuente para párrafos */
 }
 header {
   background-color: #333;

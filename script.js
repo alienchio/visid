@@ -24,8 +24,10 @@ function getRandomColor() {
 }
 
 function startCamera() {
+  const constraints = { video: true };
+
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia(constraints)
       .then(function(mediaStream) {
         stream = mediaStream;
         videoElement.srcObject = stream;
@@ -41,7 +43,8 @@ function startCamera() {
 // Detener la cámara cuando se cierra la página o se navega fuera de ella
 window.addEventListener("beforeunload", function() {
   if (stream) {
-    stream.getTracks().forEach(function(track) {
+    const tracks = stream.getTracks();
+    tracks.forEach(function(track) {
       track.stop();
     });
   }

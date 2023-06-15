@@ -1,9 +1,15 @@
 const changeColorButton = document.getElementById("changeColorButton");
+const startCameraButton = document.getElementById("startCameraButton");
 const videoElement = document.getElementById("videoElement");
+let stream;
 
 changeColorButton.addEventListener("click", function() {
   const body = document.querySelector("body");
   body.style.backgroundColor = getRandomColor();
+});
+
+startCameraButton.addEventListener("click", function() {
+  startCamera();
 });
 
 function getRandomColor() {
@@ -17,11 +23,11 @@ function getRandomColor() {
   return color;
 }
 
-// Función para acceder a la cámara y mostrar el video en pantalla
 function startCamera() {
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function(stream) {
+      .then(function(mediaStream) {
+        stream = mediaStream;
         videoElement.srcObject = stream;
       })
       .catch(function(error) {
@@ -32,7 +38,11 @@ function startCamera() {
   }
 }
 
-// Iniciar la cámara cuando se carga la página
-window.addEventListener("DOMContentLoaded", function() {
-  startCamera();
+// Detener la cámara cuando se cierra la página o se navega fuera de ella
+window.addEventListener("beforeunload", function() {
+  if (stream) {
+    stream.getTracks().forEach(function(track) {
+      track.stop();
+    });
+  }
 });

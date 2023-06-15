@@ -1,11 +1,12 @@
 body {
   font-family: Arial, sans-serif;
+  font-size: 20px; /* Tamaño de fuente base */
   background-color: #f2f2f2;
   margin: 0;
   padding: 0;
 }
 p {
-  min-height: 18px; /* Tamaño mínimo de fuente para párrafos */
+  min-height: 1em; /* Tamaño mínimo de fuente para párrafos */
 }
 header {
   background-color: #333;

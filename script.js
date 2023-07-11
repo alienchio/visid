@@ -1,6 +1,5 @@
 //Funcion para cambiar color de fondo
 const changeColorButton = document.getElementById("changeColorButton");
-const videoElement = document.getElementById("videoElement");
 
 changeColorButton.addEventListener("click", function() {
   const body = document.querySelector("body");

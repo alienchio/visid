@@ -1,51 +1,31 @@
-const changeColorButton = document.getElementById("changeColorButton");
-const startCameraButton = document.getElementById("startCameraButton");
-const videoElement = document.getElementById("videoElement");
-let stream;
+document.addEventListener('DOMContentLoaded', function() {
+  var userTableBody = document.querySelector('#userTable tbody');
 
-changeColorButton.addEventListener("click", function() {
-  const body = document.querySelector("body");
-  body.style.backgroundColor = getRandomColor();
-});
+  fetch('https://api.example.com/users', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(function(data) {
+      // Iterate over each user and create a table row
+      data.forEach(function(user) {
+        var row = document.createElement('tr');
+        row.innerHTML = '<td>' + user.id + '</td>' +
+                        '<td>' + user.name + '</td>' +
+                        '<td>' + user.email + '</td>';
 
-startCameraButton.addEventListener("click", function() {
-  startCamera();
-});
-
-function getRandomColor() {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  
-  return color;
-}
-
-function startCamera() {
-  const constraints = { video: true };
-
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(function(mediaStream) {
-        stream = mediaStream;
-        videoElement.srcObject = stream;
-      })
-      .catch(function(error) {
-        console.error("Error al acceder a la cámara: ", error);
+        userTableBody.appendChild(row);
       });
-  } else {
-    console.error("La API getUserMedia no está disponible en tu navegador.");
-  }
-}
-
-// Detener la cámara cuando se cierra la página o se navega fuera de ella
-window.addEventListener("beforeunload", function() {
-  if (stream) {
-    const tracks = stream.getTracks();
-    tracks.forEach(function(track) {
-      track.stop();
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
     });
-  }
 });
+
